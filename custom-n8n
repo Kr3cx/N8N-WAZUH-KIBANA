@@ -1,0 +1,96 @@
+#!/var/ossec/framework/python/bin/python3
+import json
+import os
+import re
+import ssl
+import sys
+import time
+import urllib.request
+
+LOG_FILE = "/var/ossec/logs/integrations.log"
+
+def log(line: str):
+    ts = time.strftime("%Y-%m-%d %H:%M:%S")
+    with open(LOG_FILE, "a") as f:
+        f.write(f"{ts} custom-n8n: {line}\n")
+
+def find_alert_file(args):
+    # Wazuh selalu mengirim path file alert JSON sebagai salah satu argumen awal.
+    for a in args[1:]:
+        if a and os.path.isfile(a):
+            return a
+    return None
+
+def find_hook_url(args):
+    # Cari argumen yang mirip URL http(s)
+    for a in args:
+        if a and re.match(r"^https?://", a):
+            return a
+    return None
+
+def find_api_key(args):
+    # API key bisa datang dari <api_key> atau argumen tambahan.
+    # Jika tidak ada, coba environment var.
+    for a in args:
+        if a and len(a) >= 16 and not a.startswith("/") and not a.startswith("http"):
+            # heuristik sederhana: string panjang, bukan path, bukan url
+            return a
+    return os.environ.get("N8N_API_KEY", "")
+
+def main():
+    args = sys.argv
+    debug = ("debug" in args)
+
+    try:
+        alert_file = find_alert_file(args)
+        hook_url = find_hook_url(args)
+        api_key  = find_api_key(args)
+
+        if debug:
+            log(f"ARGS={args}")
+
+        if not alert_file:
+            log("ERROR: alert file not found in args")
+            sys.exit(2)
+        if not hook_url:
+            log("ERROR: hook_url not found in args")
+            sys.exit(3)
+
+        # Load alert JSON
+        with open(alert_file, "r") as f:
+            alert = json.load(f)
+
+        # Kirim apa adanya (biar n8n yang proses)
+        payload = json.dumps(alert).encode("utf-8")
+
+        req = urllib.request.Request(
+            hook_url,
+            data=payload,
+            headers={
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "User-Agent": "wazuh-custom-n8n",
+                "X-Api-Key": api_key
+            },
+            method="POST"
+        )
+
+        # Jika kamu pakai TLS self-signed di n8n, ini akan mengabaikan verifikasi.
+        # Kalau sertifikat valid, aman juga.
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+
+        with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
+            status = resp.getcode()
+            body = resp.read(200).decode("utf-8", errors="ignore")
+            log(f"POST {hook_url} status={status} resp={body[:200]}")
+
+        sys.exit(0)
+
+    except Exception as e:
+        log(f"ERROR: exception={repr(e)}")
+        sys.exit(10)
+
+if __name__ == "__main__":
+    main()
