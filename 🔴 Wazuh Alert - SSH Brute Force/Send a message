@@ -1,0 +1,2 @@
+Subject : SOC Alert – {{$json.attack.technique}} from {{$json.attacker.ip}}
+Message : {{$json.html}}
