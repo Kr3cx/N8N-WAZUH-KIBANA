@@ -1,0 +1,39 @@
+/**
+ * MAP JS (n8n Code node)
+ * Input: output dari Router JS
+ * Output: dokumen minimal untuk Elasticsearch + Kibana Maps
+ */
+
+const j = $input.first().json;
+
+// ambil timestamp
+const ts = j["@timestamp"] || new Date().toISOString();
+
+// ambil ip
+const ip = j?.source?.ip ?? null;
+
+// ambil location (geo_point)
+const loc = j?.source?.geo?.location;
+const hasLoc =
+  loc &&
+  typeof loc.lat === "number" &&
+  typeof loc.lon === "number";
+
+const out = {
+  "@timestamp": ts,
+  source: {
+    ip,
+    geo: hasLoc ? { location: { lat: loc.lat, lon: loc.lon } } : undefined,
+  },
+};
+
+// rapihin: kalau geo undefined, hapus
+if (!out.source.geo) delete out.source.geo;
+
+// kalau ip null, kamu bisa pilih: tetap kirim atau drop item
+// Di sini: kalau ip null, drop biar tidak mengotori index
+if (!out.source.ip) {
+  return []; // tidak mengirim apa-apa
+}
+
+return [{ json: out }];
