@@ -1,0 +1,5 @@
+Resource : Document 
+Operation : Create 
+Data to Send : Auto MAP
+Index ID : wazuh-enriched-fix-{{ $now.format("yyyy.MM.dd") }}
+Document ID : {{$json.source.ip}}-{{$json["@timestamp"].replaceAll(":","-")}}
