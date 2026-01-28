@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOC AI Alert</title>
+</head>
+
+<body style="
+  margin:0;
+  padding:0;
+  background-color:#f1f5f9;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+">
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f1f5f9;padding:20px 0">
+  <tr>
+    <td align="center">
+      
+      <!-- Main Container -->
+      <table width="600" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.07)">
+        
+        <!-- HEADER -->
+        <tr>
+          <td style="background:linear-gradient(135deg,#dc2626 0%,#b91c1c 100%);padding:40px 30px;text-align:center;position:relative">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center">
+                  <div style="font-size:52px;line-height:1;margin-bottom:16px">🛡️</div>
+                  <div style="font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#fca5a5;margin-bottom:10px">Security Operations Center</div>
+                  <div style="font-size:26px;font-weight:800;color:#ffffff;letter-spacing:-0.3px">AI Threat Detection Alert</div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- STATUS BADGES -->
+        <tr>
+          <td style="background:#fef2f2;padding:24px 30px;border-bottom:1px solid #fee2e2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center">
+                  <table cellpadding="0" cellspacing="0" border="0" style="display:inline-block">
+                    <tr>
+                      <td style="padding:0 4px">
+                        <span style="background:#dc2626;color:#ffffff;padding:10px 20px;border-radius:24px;font-size:11px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;display:inline-block;white-space:nowrap">
+                          ⚠️ {{$json.analysis.verdict}}
+                        </span>
+                      </td>
+                      <td style="padding:0 4px">
+                        <span style="background:#ea580c;color:#ffffff;padding:10px 20px;border-radius:24px;font-size:11px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;display:inline-block;white-space:nowrap">
+                          🔥 Severity {{$json.attack.severity}}
+                        </span>
+                      </td>
+                      <td style="padding:0 4px">
+                        <span style="background:#2563eb;color:#ffffff;padding:10px 20px;border-radius:24px;font-size:11px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;display:inline-block;white-space:nowrap">
+                          🎯 {{$json.analysis.confidence}} Confidence
+                        </span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- EXEC SUMMARY -->
+        <tr>
+          <td style="padding:30px">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td>
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td style="background:#fef3c7;padding:10px;border-radius:10px;font-size:22px;line-height:1;vertical-align:middle">📋</td>
+                      <td style="padding-left:12px;font-size:18px;font-weight:700;color:#0f172a;vertical-align:middle">Executive Summary</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding-top:16px">
+                  <div style="background:#fffbeb;border-left:4px solid #f59e0b;border-radius:0 10px 10px 0;padding:20px;font-size:14px;line-height:1.7;color:#78350f">
+                    {{$json.analysis.reasoning}}
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Attack Details Card -->
+        <tr>
+          <td style="padding:0 30px 20px">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden">
+              <tr>
+                <td style="padding:20px;border-bottom:2px solid #fee2e2">
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td style="background:#fef2f2;padding:10px;border-radius:10px;font-size:20px;line-height:1;vertical-align:middle">⚔️</td>
+                      <td style="padding-left:12px;font-size:16px;font-weight:700;color:#0f172a;vertical-align:middle">Attack Details</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:20px">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:14px">
+                    <tr>
+                      <td style="padding:12px 0;color:#64748b;width:35%">Attack Type</td>
+                      <td style="padding:12px 0;font-weight:600;color:#0f172a">
+                        <span style="background:#fee2e2;color:#991b1b;padding:5px 12px;border-radius:6px;font-size:13px;white-space:nowrap">{{$json.attack.technique}}</span>
+                        <span style="color:#64748b;font-weight:400"> ({{$json.attack.service}})</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding:12px 0;color:#64748b;border-top:1px solid #f1f5f9">MITRE Tactic</td>
+                      <td style="padding:12px 0;font-weight:600;color:#0f172a;border-top:1px solid #f1f5f9">{{$json.attack.tactic}}</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Attacker Profile Card -->
+        <tr>
+          <td style="padding:0 30px 20px">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden">
+              <tr>
+                <td style="padding:20px;border-bottom:2px solid #fce7f3">
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td style="background:#fdf2f8;padding:10px;border-radius:10px;font-size:20px;line-height:1;vertical-align:middle">🎭</td>
+                      <td style="padding-left:12px;font-size:16px;font-weight:700;color:#0f172a;vertical-align:middle">Attacker Profile</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:20px">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:14px">
+                    <tr>
+                      <td style="padding:12px 0;color:#64748b;width:35%">IP Address</td>
+                      <td style="padding:12px 0;font-weight:600;color:#0f172a">
+                        <code style="background:#f1f5f9;padding:5px 12px;border-radius:6px;font-family:'Courier New',monospace;font-size:13px">{{$json.attacker.ip}}</code>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding:12px 0;color:#64748b;border-top:1px solid #f1f5f9">ISP / ASN</td>
+                      <td style="padding:12px 0;font-weight:600;color:#0f172a;border-top:1px solid #f1f5f9">{{$json.attacker.isp}} <span style="color:#64748b;font-weight:400">(AS{{$json.attacker.asn}})</span></td>
+                    </tr>
+                    <tr>
+                      <td style="padding:12px 0;color:#64748b;border-top:1px solid #f1f5f9">Country</td>
+                      <td style="padding:12px 0;font-weight:600;color:#0f172a;border-top:1px solid #f1f5f9">🌍 {{$json.attacker.country}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding:12px 0;color:#64748b;border-top:1px solid #f1f5f9">Cloud Provider</td>
+                      <td style="padding:12px 0;border-top:1px solid #f1f5f9">
+                        <span style="background:{{$json.attacker.is_cloud_provider ? '#dcfce7' : '#f1f5f9'}};color:{{$json.attacker.is_cloud_provider ? '#166534' : '#475569'}};padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap">
+                          {{$json.attacker.is_cloud_provider ? "☁️ Yes" : "No"}}
+                        </span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Target Information Card -->
+        <tr>
+          <td style="padding:0 30px 20px">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden">
+              <tr>
+                <td style="padding:20px;border-bottom:2px solid #dbeafe">
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td style="background:#eff6ff;padding:10px;border-radius:10px;font-size:20px;line-height:1;vertical-align:middle">🎯</td>
+                      <td style="padding-left:12px;font-size:16px;font-weight:700;color:#0f172a;vertical-align:middle">Target Information</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:20px">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:14px">
+                    <tr>
+                      <td style="padding:12px 0;color:#64748b;width:35%">Host</td>
+                      <td style="padding:12px 0;font-weight:600;color:#0f172a">🖥️ {{$json.target.host}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding:12px 0;color:#64748b;border-top:1px solid #f1f5f9">Host IP</td>
+                      <td style="padding:12px 0;font-weight:600;color:#0f172a;border-top:1px solid #f1f5f9">
+                        <code style="background:#f1f5f9;padding:5px 12px;border-radius:6px;font-family:'Courier New',monospace;font-size:13px">{{$json.target.host_ip}}</code>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding:12px 0;color:#64748b;border-top:1px solid #f1f5f9">User</td>
+                      <td style="padding:12px 0;font-weight:600;color:#0f172a;border-top:1px solid #f1f5f9">👤 {{$json.target.user}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding:12px 0;color:#64748b;border-top:1px solid #f1f5f9">Privileged</td>
+                      <td style="padding:12px 0;border-top:1px solid #f1f5f9">
+                        <span style="background:{{$json.target.is_privileged ? '#fef2f2' : '#f0fdf4'}};color:{{$json.target.is_privileged ? '#991b1b' : '#166534'}};padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap">
+                          {{$json.target.is_privileged ? "🔑 Yes - High Risk" : "✓ No"}}
+                        </span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Threat Intelligence Card -->
+        <tr>
+          <td style="padding:0 30px 20px">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden">
+              <tr>
+                <td style="padding:20px;border-bottom:2px solid #fae8ff">
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td style="background:#fdf4ff;padding:10px;border-radius:10px;font-size:20px;line-height:1;vertical-align:middle">🔍</td>
+                      <td style="padding-left:12px;font-size:16px;font-weight:700;color:#0f172a;vertical-align:middle">Threat Intelligence (VirusTotal)</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:20px">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td width="33%" align="center" style="padding:0 6px">
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fef2f2;border-radius:10px">
+                          <tr>
+                            <td style="padding:18px;text-align:center">
+                              <div style="font-size:32px;font-weight:800;color:#dc2626;line-height:1;margin-bottom:8px">{{$json.reputation.vt_malicious}}</div>
+                              <div style="font-size:12px;color:#991b1b;font-weight:600">🚫 Malicious</div>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td width="33%" align="center" style="padding:0 6px">
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fffbeb;border-radius:10px">
+                          <tr>
+                            <td style="padding:18px;text-align:center">
+                              <div style="font-size:32px;font-weight:800;color:#d97706;line-height:1;margin-bottom:8px">{{$json.reputation.vt_suspicious}}</div>
+                              <div style="font-size:12px;color:#92400e;font-weight:600">⚠️ Suspicious</div>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td width="33%" align="center" style="padding:0 6px">
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f1f5f9;border-radius:10px">
+                          <tr>
+                            <td style="padding:18px;text-align:center">
+                              <div style="font-size:32px;font-weight:800;color:#475569;line-height:1;margin-bottom:8px">{{$json.reputation.vt_reputation}}</div>
+                              <div style="font-size:12px;color:#64748b;font-weight:600">📊 Reputation</div>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Recommended Action -->
+        <tr>
+          <td style="padding:0 30px 30px">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:linear-gradient(135deg,#065f46 0%,#047857 100%);border-radius:12px;overflow:hidden">
+              <tr>
+                <td style="padding:26px">
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td style="font-size:24px;line-height:1;vertical-align:middle;padding-right:10px">✅</td>
+                      <td style="font-size:18px;font-weight:700;color:#ffffff;vertical-align:middle">Recommended Action</td>
+                    </tr>
+                  </table>
+                  <div style="margin-top:14px;background:rgba(0,0,0,0.2);border-radius:8px;padding:16px;font-size:14px;line-height:1.6;color:#d1fae5">
+                    {{$json.analysis.recommended_action}}
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="background:#f8fafc;border-top:1px solid #e2e8f0;padding:24px;text-align:center">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center" style="font-size:12px;color:#64748b;line-height:1.6">
+                  <div style="margin-bottom:8px">
+                    <span style="font-weight:600">🤖 SOC AI</span>
+                    <span style="margin:0 8px;color:#cbd5e1">•</span>
+                    <span>n8n Automation</span>
+                    <span style="margin:0 8px;color:#cbd5e1">•</span>
+                    <span>LLM Analysis</span>
+                  </div>
+                  <div style="color:#cbd5e1;font-size:11px">
+                    This is an automated security alert. Please review and take appropriate action.
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+      </table>
+      
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
