@@ -1,0 +1,1 @@
+[SECURITY][{{$json.attack.technique}}] {{$json.analysis.verdict}} on {{$json.target.host}} from {{$json.attacker.ip}} (Severity {{$json.attack.severity}})
