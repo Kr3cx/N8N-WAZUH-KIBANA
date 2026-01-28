@@ -1,0 +1,28 @@
+Mode : Rules 
+
+Routing Rules :
+1. 
+
+
+__________________
+{{$json.route}}
+(Text) Is Equal To
+not_found
+__________________
+
+2.
+
+__________________
+{{$json.route}}
+(Text) Is Equal To
+safe
+__________________
+
+3.
+
+
+__________________
+{{$json.route}}
+(Text) Is Equal To
+malicious
+__________________
