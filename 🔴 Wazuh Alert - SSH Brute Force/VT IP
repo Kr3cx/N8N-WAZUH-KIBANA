@@ -1,0 +1,1 @@
+https://www.virustotal.com/api/v3/ip_addresses/{{$json.source.structured.srcip}}
