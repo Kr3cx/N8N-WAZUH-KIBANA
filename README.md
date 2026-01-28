@@ -204,7 +204,6 @@ N8N-WAZUH-KIBANA/
 │   └── Tutor Node SSH Alert.txt                 # Tutorial SSH alert
 └── ✅ Wazuh Alert - Malicious File Detection/
     ├── Tutor Node File Alert.txt                # Tutorial file detection
-    └── File Summary Display.html                # Template HTML untuk N8N
 ```
 
 ---
