@@ -1,0 +1,5 @@
+Resource : Message
+Operation : Send
+Subject:🚨 VT Alert: {{$json.status}} ({{$json.malicious}} malicious)
+Email Type : HTML
+Message : {{$json.html}}
