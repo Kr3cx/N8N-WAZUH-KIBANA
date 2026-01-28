@@ -1,0 +1,1 @@
+curl http://ip-api.com/json/{{$json.source.structured.srcip}}
