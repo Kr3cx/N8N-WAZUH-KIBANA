@@ -1,0 +1,1 @@
+Malicious file detected (SHA256:  File Path : {{$json.file_path}})  SHA256 : {{ $json.sha256 }}
