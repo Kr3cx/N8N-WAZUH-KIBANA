@@ -1,0 +1,48 @@
+# WAZUH MANAGER #
+
+1.)
+_______________________________________________________________________________________
+sudo nano /var/ossec/etc/rules/local_rules.xml
+_______________________________________________________________________________________
+<!-- Local rules -->
+
+<!-- Modify it at your will. -->
+<!-- Copyright (C) 2015, Wazuh Inc. -->
+
+<!-- Example -->
+<group name="local,syslog,sshd,">
+
+  <!--
+  Dec 10 01:02:02 host sshd[1234]: Failed none for root from 1.1.1.1 port 1066 ssh2
+  -->
+    <rule id="110010" level="12" frequency="10" timeframe="120" ignore="3600">
+      <if_matched_sid>5710</if_matched_sid>
+      <same_source_ip />
+      <description>SSH brute force detected (tuned for internal bastion)</description>
+      <mitre>
+        <id>T1110</id>
+      </mitre>
+      <group>authentication_failures,ssh_bruteforce,</group>
+  </rule>
+
+</group>
+
+_______________________________________________________________________________________
+
+2.)
+_______________________________________________________________________________________
+sudo nano /var/ossec/etc/ossec.conf
+_______________________________________________________________________________________
+<integration>
+  <name>custom-n8n</name>
+  <hook_url>https://YOUR_URL_WEBHOOK/webhook/high_severity</hook_url>
+  <group>sshd</group>
+  <alert_format>json</alert_format>
+</integration>
+_______________________________________________________________________________________
+
+
+3.)
+_______________________________________________________________________________________
+sudo systemctl restart wazuh-manager
+_______________________________________________________________________________________
