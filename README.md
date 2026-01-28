@@ -191,7 +191,6 @@ Mendeteksi serangan brute force SSH dan mengirim alert ke N8N untuk response oto
 Mendeteksi file berbahaya menggunakan File Integrity Monitoring (FIM) dan integrasi VirusTotal.
 - **Direktori:** `✅ Wazuh Alert - Malicious File Detection/`
 - **Tutorial:** Lihat `Tutor Node File Alert.txt`
-- **Template:** `File Summary Display.html` untuk tampilan hasil analisis
 
 ---
 
